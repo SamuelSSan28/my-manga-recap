@@ -13,6 +13,11 @@ def parse_args():
     parser.add_argument("--output", required=True, help="Output video file")
     parser.add_argument("--lang", default="pt", help="Language for narration")
     parser.add_argument("--temp", default="temp", help="Temporary working directory")
+    parser.add_argument("--model", default="google/flan-t5-base", help="HuggingFace model for summarization")
+    parser.add_argument("--prompt", help="Custom prompt for summarization")
+    parser.add_argument("--voice", help="Voice name for narration")
+    parser.add_argument("--image_duration", type=float, help="Duration for each image in seconds")
+    parser.add_argument("--use_tts", action="store_true", help="Use neural TTS if available")
     return parser.parse_args()
 
 
@@ -31,7 +36,7 @@ def main() -> None:
     chapter_texts = [extract_text_from_chapter(chapter) for chapter in chapter_dirs]
 
     # Summarization
-    summaries = summarize_text(chapter_texts)
+    summaries = summarize_text(chapter_texts, model=args.model, prompt=args.prompt)
 
     # Build script
     script = build_script(summaries)
@@ -41,10 +46,22 @@ def main() -> None:
 
     # Generate audio narration
     audio_path = os.path.join(args.temp, "narration.mp3")
-    text_to_speech(script, audio_path, lang=args.lang)
+    text_to_speech(
+        script,
+        audio_path,
+        lang=args.lang,
+        voice_name=args.voice,
+        use_tts=args.use_tts,
+    )
 
     # Generate video from images and narration
-    create_video(chapter_dirs, audio_path, args.output)
+    create_video(
+        chapter_dirs,
+        audio_path,
+        args.output,
+        script=script,
+        image_duration=args.image_duration,
+    )
 
 
 if __name__ == "__main__":

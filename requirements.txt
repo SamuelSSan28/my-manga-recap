@@ -3,3 +3,4 @@ Pillow
 transformers
 moviepy
 pyttsx3
+TTS
