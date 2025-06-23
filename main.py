@@ -13,6 +13,8 @@ from modules.config import (
     DEFAULT_VOICE,
     DEFAULT_IMAGE_DURATION,
     DEFAULT_USE_TTS,
+    DEFAULT_VIDEO_WIDTH,
+    DEFAULT_VIDEO_HEIGHT,
 )
 
 
@@ -27,6 +29,8 @@ def parse_args():
     parser.add_argument("--voice", default=DEFAULT_VOICE, help="Voice name for narration")
     parser.add_argument("--image_duration", type=float, default=DEFAULT_IMAGE_DURATION, help="Duration for each image in seconds")
     parser.add_argument("--use_tts", action="store_true", default=DEFAULT_USE_TTS, help="Use neural TTS if available")
+    parser.add_argument("--width", type=int, default=DEFAULT_VIDEO_WIDTH, help="Output video width")
+    parser.add_argument("--height", type=int, default=DEFAULT_VIDEO_HEIGHT, help="Output video height")
     return parser.parse_args()
 
 
@@ -70,6 +74,8 @@ def main() -> None:
         args.output,
         script=script,
         image_duration=args.image_duration,
+        width=args.width,
+        height=args.height,
     )
 
 
