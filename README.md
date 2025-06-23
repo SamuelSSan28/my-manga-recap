@@ -12,6 +12,7 @@ O **MangaRecap** é uma ferramenta que gera vídeos curtos e roteiros para **res
 * 📝 **Roteiros prontos**: produz scripts editáveis para narradores baseados nos pontos principais.
 * 🔍 **Sumarização automática**: extrai os principais eventos, personagens e diálogos.
 * 🖼️ **Processamento de imagens**: recebe imagens de cada capítulo, utiliza OCR para extrair os textos e gerar o resumo.
+* ✂️ **Ajuste de páginas longas**: corta automaticamente imagens muito compridas para caber no formato do vídeo.
 * 🛠️ **Exportação versátil**: permite exportar vídeo+roteiro em MP4, TXT ou JSON.
 
 ---
@@ -58,6 +59,8 @@ Parâmetros disponíveis:
 * `--chapters_dir`: pasta contendo subdiretórios com as imagens de cada capítulo
 * `--output`: nome do arquivo de vídeo de saída
 * `--lang`: idioma da narração (ex: `pt`, `en`)
+* `--width`: largura do vídeo de saída (padrão 1280)
+* `--height`: altura do vídeo de saída (padrão 720)
 
 As configurações padrão desses argumentos estão em `modules/config.py`. Você
 pode editar esse arquivo para alterar valores como modelo de IA, idioma ou
