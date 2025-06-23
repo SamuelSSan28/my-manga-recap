@@ -11,6 +11,7 @@ O **MangaRecap** é uma ferramenta que gera vídeos curtos e roteiros para **res
 * 🎬 **Geração de vídeo curto**: automatiza a criação de vídeos estilo “shorts” contendo síntese da história.
 * 📝 **Roteiros prontos**: produz scripts editáveis para narradores baseados nos pontos principais.
 * 🔍 **Sumarização automática**: extrai os principais eventos, personagens e diálogos.
+* 🖼️ **Processamento de imagens**: recebe imagens de cada capítulo, utiliza OCR para extrair os textos e gerar o resumo.
 * 🛠️ **Exportação versátil**: permite exportar vídeo+roteiro em MP4, TXT ou JSON.
 
 ---
@@ -49,12 +50,12 @@ pip install -r requirements.txt
 ### 4. Execute o script principal
 
 ```bash
-python main.py --input arquivo_manga.txt --output resumo.mp4
+python main.py --chapters_dir caminho/para/capitulos --output resumo.mp4
 ```
 
 Parâmetros disponíveis:
 
-* `--input`: arquivo de texto com resumo bruto do mangá
+* `--chapters_dir`: pasta contendo subdiretórios com as imagens de cada capítulo
 * `--output`: nome do arquivo de vídeo de saída
 * `--lang`: idioma da narração (ex: `pt`, `en`)
 
@@ -79,10 +80,10 @@ Parâmetros disponíveis:
 ## Exemplos de uso
 
 ```bash
-python main.py --input one_piece_summary.txt --output one_piece_short.mp4 --lang pt
+python main.py --chapters_dir manga/one_piece/chapters --output one_piece_short.mp4 --lang pt
 ```
 
-Gera um vídeo com resumo narrado de *One Piece*.
+Gera um vídeo com resumo narrado de *One Piece* a partir das imagens dos capítulos.
 
 ---
 
