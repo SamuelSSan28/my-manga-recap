@@ -28,8 +28,8 @@ O **MangaRecap** é uma ferramenta que gera vídeos curtos e roteiros para **res
 ### 1. Clone este repositório
 
 ```bash
-git clone https://github.com/SEU_USUARIO/MangaRecap.git  
-cd MangaRecap
+git clone https://github.com/SEU_USUARIO/my-manga-recap.git
+cd my-manga-recap
 ```
 
 ### 2. Crie um ambiente virtual (opcional, mas recomendado)
