@@ -4,3 +4,8 @@ transformers
 moviepy
 pyttsx3
 TTS
+
+requests
+beautifulsoup4
+selenium
+webdriver-manager

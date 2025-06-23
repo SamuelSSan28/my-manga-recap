@@ -92,6 +92,27 @@ prompt de sumarização sem precisar passar tudo pela linha de comando.
 5. Esse roteiro é transformado em narração em `modules/audio_gen.py`.
 6. Por fim `modules/video_gen.py` sincroniza as imagens com o áudio e gera o vídeo final.
 
+### Scraping de capítulos
+
+Para baixar automaticamente capítulos de um site de mangá, utilize o script `scrape.py` em duas etapas:
+
+1. **Coletar links** da página da série:
+
+   ```bash
+   python scrape.py fetch URL_DA_SERIE links.json
+   ```
+
+   Isso cria um `links.json` com todas as URLs dos capítulos encontrados.
+
+2. **Baixar imagens** de cada capítulo listado no JSON:
+
+   ```bash
+   python scrape.py download links.json NomeDoManga
+   ```
+
+   As imagens serão salvas em `NomeDoManga/chapter-1`, `chapter-2`, etc. Um arquivo `scraper.log` registra horário e eventuais erros durante o processo.
+   O scraper usa o Selenium em modo headless para renderizar a página e aguardar as imagens carregarem, o que ajuda a contornar bloqueios como o Cloudflare.
+
 
 ---
 
