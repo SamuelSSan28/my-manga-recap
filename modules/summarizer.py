@@ -1,20 +1,18 @@
 from typing import List
 from transformers import pipeline
+from .config import DEFAULT_MODEL, DEFAULT_PROMPT
 
 
 def summarize_text(
     chapter_texts: List[str],
-    model: str = "google/flan-t5-base",
+    model: str = DEFAULT_MODEL,
     prompt: str | None = None,
     max_new_tokens: int = 256,
 ) -> List[str]:
     """Summarize a list of chapter texts using a customizable prompt."""
 
     if prompt is None:
-        prompt = (
-            "Resuma o seguinte texto de forma narrativa. Utilize '[PAUSA]' para "
-            "indicar pausas e sugira imagens no formato [IMAGEM: descricao]."
-        )
+        prompt = DEFAULT_PROMPT
 
     summarizer = pipeline("text2text-generation", model=model)
 

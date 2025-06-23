@@ -59,6 +59,10 @@ Parâmetros disponíveis:
 * `--output`: nome do arquivo de vídeo de saída
 * `--lang`: idioma da narração (ex: `pt`, `en`)
 
+As configurações padrão desses argumentos estão em `modules/config.py`. Você
+pode editar esse arquivo para alterar valores como modelo de IA, idioma ou
+prompt de sumarização sem precisar passar tudo pela linha de comando.
+
 ---
 
 ## Estrutura do projeto
@@ -70,10 +74,21 @@ Parâmetros disponíveis:
 │   ├── summarizer.py   # Sumarização de texto
 │   ├── script_gen.py   # Geração de roteiro
 │   ├── video_gen.py    # Montagem de vídeo
-│   └── audio_gen.py    # Geração de áudio narrado
+│   ├── audio_gen.py    # Geração de áudio narrado
+│   └── config.py       # Valores padrão de configuração
 ├── requirements.txt
-├── README.md
+└── README.md
 ```
+
+## Fluxo de execução
+
+1. `main.py` lê as configurações de `modules/config.py` e os argumentos da linha de comando.
+2. As imagens são processadas por `modules/ocr.py` para extrair o texto de cada capítulo.
+3. O texto extraído é resumido em `modules/summarizer.py` utilizando o prompt padrão.
+4. `modules/script_gen.py` combina os resumos em um roteiro único.
+5. Esse roteiro é transformado em narração em `modules/audio_gen.py`.
+6. Por fim `modules/video_gen.py` sincroniza as imagens com o áudio e gera o vídeo final.
+
 
 ---
 
