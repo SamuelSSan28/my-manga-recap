@@ -1,7 +1,3 @@
-Claro! Aqui está um exemplo de arquivo **README.md** para um projeto que gera vídeos e roteiros para resumir histórias de mangás:
-
----
-
 # MangaRecap 🎥📚
 
 ## Descrição
@@ -103,17 +99,5 @@ Siga estas etapas:
 
 ---
 
-## Licença
-
-MIT License — veja [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## Contato
-
-* **E-mail**: você@exemplo.com
-* **Twitter**: [@seu\_usuario](https://twitter.com/seu_usuario)
-
----
-
-Se quiser que eu ajuste alguma parte (como adicionar badges, instruções de deploy em CI/CD, ou até personalizar ainda mais conforme seu estilo de mangá!), é só me chamar 😊
+  
+ 
