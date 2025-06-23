@@ -5,19 +5,28 @@ from modules.summarizer import summarize_text
 from modules.script_gen import build_script
 from modules.audio_gen import text_to_speech
 from modules.video_gen import create_video
+from modules.config import (
+    DEFAULT_TEMP_DIR,
+    DEFAULT_MODEL,
+    DEFAULT_PROMPT,
+    DEFAULT_LANG,
+    DEFAULT_VOICE,
+    DEFAULT_IMAGE_DURATION,
+    DEFAULT_USE_TTS,
+)
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Generate video recap from manga chapters")
     parser.add_argument("--chapters_dir", required=True, help="Directory containing chapter folders with images")
     parser.add_argument("--output", required=True, help="Output video file")
-    parser.add_argument("--lang", default="pt", help="Language for narration")
-    parser.add_argument("--temp", default="temp", help="Temporary working directory")
-    parser.add_argument("--model", default="google/flan-t5-base", help="HuggingFace model for summarization")
-    parser.add_argument("--prompt", help="Custom prompt for summarization")
-    parser.add_argument("--voice", help="Voice name for narration")
-    parser.add_argument("--image_duration", type=float, help="Duration for each image in seconds")
-    parser.add_argument("--use_tts", action="store_true", help="Use neural TTS if available")
+    parser.add_argument("--lang", default=DEFAULT_LANG, help="Language for narration")
+    parser.add_argument("--temp", default=DEFAULT_TEMP_DIR, help="Temporary working directory")
+    parser.add_argument("--model", default=DEFAULT_MODEL, help="HuggingFace model for summarization")
+    parser.add_argument("--prompt", default=DEFAULT_PROMPT, help="Custom prompt for summarization")
+    parser.add_argument("--voice", default=DEFAULT_VOICE, help="Voice name for narration")
+    parser.add_argument("--image_duration", type=float, default=DEFAULT_IMAGE_DURATION, help="Duration for each image in seconds")
+    parser.add_argument("--use_tts", action="store_true", default=DEFAULT_USE_TTS, help="Use neural TTS if available")
     return parser.parse_args()
 
 
