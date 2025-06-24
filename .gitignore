@@ -1,2 +1,79 @@
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Manga downloads (folders created by scraper)
+*/chapter-*/
+The Beginning After The End/
+*_manga/
+*_chapters/
+
+# Common manga folder patterns
+[A-Z]*/
+[a-z]*/
+*[Mm]anga*/
+*[Mm]anhwa*/
+*[Mm]anhua*/
+
+# Generated JSON files
+*.json
+!requirements.txt
+
+# Logs
+*.log
+scraper.log
+debug.log
+
+# Generated videos and audio
+*.mp4
+*.avi
+*.mov
+*.mp3
+*.wav
+*.m4a
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
+
+# Generated scripts and text
+script.txt
+narration.*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Selenium/Browser files
+geckodriver.log
+chromedriver.log
+
+# Checkpoint files
+.*_checkpoint.json
+video_checkpoint.json
+chapter_texts.json
+summaries.json
