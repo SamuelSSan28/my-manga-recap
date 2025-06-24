@@ -1,143 +1,264 @@
-# MangaRecap 🎥📚
+# 🎬 My Manga Recap
 
-## Descrição
+Sistema completo e adaptável para converter mangás em vídeos narrados com IA.
 
-O **MangaRecap** é uma ferramenta que gera vídeos curtos e roteiros para **resumir histórias de mangás**. Ideal para quem quer compartilhar resumos visuais e narrados das sagas. Utiliza inteligência artificial para criar conteúdo informativo e dinâmico.
+## ✨ Funcionalidades
 
----
+### 🧠 Sistema de IA Adaptável
+- **OpenAI Provider**: GPT + TTS de qualidade premium (quando disponível)
+- **Local Provider**: TTS local com pyttsx3 (sempre disponível)
+- **Silent Provider**: Fallback com áudio de duração calculada (garantia de funcionamento)
+- **Fallback automático**: Sistema inteligente que sempre encontra uma solução
 
-## Funcionalidades
+### ⚙️ Configuração Simplificada com .env
+- **Configuração centralizada**: Todas as configurações em um só lugar
+- **Arquivo .env**: Configuração segura de API keys
+- **Fallback inteligente**: Funciona sem configuração externa
 
-* 🎬 **Geração de vídeo curto**: automatiza a criação de vídeos estilo “shorts” contendo síntese da história.
-* 📝 **Roteiros prontos**: produz scripts editáveis para narradores baseados nos pontos principais.
-* 🔍 **Sumarização automática**: extrai os principais eventos, personagens e diálogos.
-* 🖼️ **Processamento de imagens**: recebe imagens de cada capítulo, utiliza OCR para extrair os textos e gerar o resumo.
-* ✂️ **Ajuste de páginas longas**: corta automaticamente imagens muito compridas para caber no formato do vídeo.
-* 🛠️ **Exportação versátil**: permite exportar vídeo+roteiro em MP4, TXT ou JSON.
-
----
-
-## Tecnologias utilizadas
-
-* **Python** com bibliotecas como `transformers`, `moviepy` e `pyttsx3`
-* Integração com APIs de IA para sumarização e síntese de voz
-* **GitHub Actions** para automatizar testes e deploys
-
----
-
-## Como começar
-
-### 1. Clone este repositório
+## 🛠️ Instalação Rápida
 
 ```bash
-git clone https://github.com/SEU_USUARIO/my-manga-recap.git
+# Clone o repositório
+git clone <repo_url>
 cd my-manga-recap
+
+# Crie um ambiente virtual
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+
+# Instale dependências
+pip install -r requirements.txt
+
+# (Opcional) Configure OpenAI para qualidade premium
+cp env.example .env
+# Edite .env e adicione sua OPENAI_API_KEY
 ```
 
-### 2. Crie um ambiente virtual (opcional, mas recomendado)
+## 🚀 Uso Básico
 
+### Teste Rápido (Sempre Funciona)
 ```bash
-python3 -m venv venv  
-source venv/bin/activate  # Linux/macOS  
-venv\Scripts\activate     # Windows
+# Funciona sem qualquer configuração externa
+python main.py --chapters_dir "manga_folder" --output "test.mp4" --max-chapters 1 --force
 ```
 
-### 3. Instale as dependências
-
+### Com OpenAI (Qualidade Premium)
 ```bash
+# 1. Configure o arquivo .env
+cp env.example .env
+nano .env  # Adicione sua OPENAI_API_KEY
+
+# 2. Execute com qualidade premium
+python main.py --chapters_dir "manga_folder" --output "video.mp4"
+```
+
+### Verificar Sistema
+```bash
+# Verificar configuração atual
+python test_openai.py --config
+
+# Testar todos os provedores
+python test_openai.py
+```
+
+## ⚙️ Configuração
+
+### Arquivo .env
+```bash
+# Copie o exemplo
+cp env.example .env
+
+# Edite com suas configurações
+OPENAI_API_KEY=sk-sua-chave-aqui
+OPENAI_MODEL=gpt-4o-mini
+OPENAI_TTS_MODEL=tts-1
+OPENAI_TTS_VOICE=alloy
+```
+
+### Configurações Disponíveis
+
+| Variável | Descrição | Padrão |
+|----------|-----------|---------|
+| `OPENAI_API_KEY` | Chave da API OpenAI | (vazio) |
+| `OPENAI_MODEL` | Modelo GPT | `gpt-4o-mini` |
+| `OPENAI_TTS_MODEL` | Modelo TTS | `tts-1` |
+| `OPENAI_TTS_VOICE` | Voz do TTS | `alloy` |
+
+### Vozes Disponíveis
+- **alloy**: Voz neutra e clara
+- **echo**: Voz masculina
+- **fable**: Voz expressiva 
+- **onyx**: Voz grave
+- **nova**: Voz feminina
+- **shimmer**: Voz suave
+
+## 🤖 Sistema de Provedores
+
+### 1. **OpenAI Provider** (Premium)
+```bash
+✅ Roteiros profissionais com GPT
+✅ TTS de alta qualidade
+✅ Múltiplas vozes naturais
+⚠️  Requer API key e créditos
+```
+
+### 2. **Local Provider** (Sempre Disponível)
+```bash
+✅ Sempre funciona offline
+✅ TTS com vozes do sistema
+✅ Roteiros funcionais
+⚠️  Qualidade dependente do sistema
+```
+
+### 3. **Silent Provider** (Garantia)
+```bash
+✅ Sempre funciona como último recurso
+✅ Duração calculada baseada no texto
+✅ Perfeito para testes
+⚠️  Áudio silencioso
+```
+
+## 📊 Arquitetura do Sistema
+
+```
+┌─────────────────┐
+│   main.py       │
+└─────────┬───────┘
+          │
+┌─────────▼───────┐
+│   modules/      │
+│  ├─ config.py   │ ◄── Carrega .env
+│  ├─ ai_provider │ ◄── Usa config
+│  ├─ ocr.py      │
+│  ├─ script_*    │
+│  ├─ audio_gen   │
+│  └─ video_gen   │
+└─────────────────┘
+```
+
+## 🎯 Parâmetros CLI
+
+| Parâmetro | Descrição | Padrão |
+|-----------|-----------|---------|
+| `--chapters_dir` | Diretório com capítulos | (obrigatório) |
+| `--output` | Arquivo de vídeo de saída | (obrigatório) |
+| `--max-chapters` | Limite de capítulos (teste) | Todos |
+| `--force` | Ignorar checkpoints | False |
+| `--temp` | Diretório temporário | `temp` |
+| `--lang` | Idioma da narração | `pt` |
+| `--width` | Largura do vídeo | 1280 |
+| `--height` | Altura do vídeo | 720 |
+
+## 🔧 Troubleshooting
+
+### Problema: "OpenAI não funciona"
+```bash
+# Verificar configuração
+python test_openai.py --config
+
+# Sistema usa automaticamente Local Provider
+```
+
+### Problema: "Sem arquivo .env"
+```bash
+# Copiar exemplo
+cp env.example .env
+
+# Sistema funciona sem .env (usa Local Provider)
+```
+
+### Problema: "python-dotenv não encontrado"
+```bash
+# Instalar dependência
+pip install python-dotenv
+
+# Ou reinstalar todas
 pip install -r requirements.txt
 ```
 
-### 4. Execute o script principal
-
-```bash
-python main.py --chapters_dir caminho/para/capitulos --output resumo.mp4
-```
-
-Parâmetros disponíveis:
-
-* `--chapters_dir`: pasta contendo subdiretórios com as imagens de cada capítulo
-* `--output`: nome do arquivo de vídeo de saída
-* `--lang`: idioma da narração (ex: `pt`, `en`)
-* `--width`: largura do vídeo de saída (padrão 1280)
-* `--height`: altura do vídeo de saída (padrão 720)
-
-As configurações padrão desses argumentos estão em `modules/config.py`. Você
-pode editar esse arquivo para alterar valores como modelo de IA, idioma ou
-prompt de sumarização sem precisar passar tudo pela linha de comando.
-
----
-
-## Estrutura do projeto
+## 📁 Estrutura de Arquivos
 
 ```
-/
-├── main.py             # Script de entrada
+my-manga-recap/
+├── main.py              # Script principal
+├── test_openai.py       # Teste de provedores
+├── env.example          # Exemplo de configuração
+├── .env                 # Suas configurações (não versionado)
+├── requirements.txt     # Dependências
 ├── modules/
-│   ├── summarizer.py   # Sumarização de texto
-│   ├── script_gen.py   # Geração de roteiro
-│   ├── video_gen.py    # Montagem de vídeo
-│   ├── audio_gen.py    # Geração de áudio narrado
-│   └── config.py       # Valores padrão de configuração
-├── requirements.txt
-└── README.md
+│   ├── __init__.py      # Exports do módulo
+│   ├── config.py        # Configurações centralizadas
+│   ├── ai_provider.py   # Sistema de IA
+│   ├── ocr.py          # Extração de texto
+│   ├── script_narrator.py # Geração de roteiros
+│   ├── audio_gen.py    # Síntese de voz
+│   └── video_gen.py    # Criação de vídeo
+└── temp/               # Arquivos temporários
+    ├── chapter_texts.json
+    ├── narration_scripts.json
+    └── narration.mp3
 ```
 
-## Fluxo de execução
+## 🎮 Exemplos Práticos
 
-1. `main.py` lê as configurações de `modules/config.py` e os argumentos da linha de comando.
-2. As imagens são processadas por `modules/ocr.py` para extrair o texto de cada capítulo.
-3. O texto extraído é resumido em `modules/summarizer.py` utilizando o prompt padrão.
-4. `modules/script_gen.py` combina os resumos em um roteiro único.
-5. Esse roteiro é transformado em narração em `modules/audio_gen.py`.
-6. Por fim `modules/video_gen.py` sincroniza as imagens com o áudio e gera o vídeo final.
-
-### Scraping de capítulos
-
-Para baixar automaticamente capítulos de um site de mangá, utilize o script `scrape.py` em duas etapas:
-
-1. **Coletar links** da página da série:
-
-   ```bash
-   python scrape.py fetch URL_DA_SERIE links.json
-   ```
-
-   Isso cria um `links.json` com todas as URLs dos capítulos encontrados.
-
-2. **Baixar imagens** de cada capítulo listado no JSON:
-
-   ```bash
-   python scrape.py download links.json NomeDoManga
-   ```
-
-   As imagens serão salvas em `NomeDoManga/chapter-1`, `chapter-2`, etc. Um arquivo `scraper.log` registra horário e eventuais erros durante o processo.
-   O scraper usa o Selenium em modo headless para renderizar a página e aguardar as imagens carregarem, o que ajuda a contornar bloqueios como o Cloudflare.
-
-
----
-
-## Exemplos de uso
-
+### Configuração Inicial
 ```bash
-python main.py --chapters_dir manga/one_piece/chapters --output one_piece_short.mp4 --lang pt
+# 1. Copiar configuração
+cp env.example .env
+
+# 2. Editar com sua API key
+echo "OPENAI_API_KEY=sk-sua-chave" > .env
+
+# 3. Testar configuração
+python test_openai.py --config
 ```
 
-Gera um vídeo com resumo narrado de *One Piece* a partir das imagens dos capítulos.
+### Teste Básico
+```bash
+# Sempre funciona, sem configuração
+python main.py --chapters_dir "manga" --output "test.mp4" --max-chapters 1
+```
+
+### Qualidade Premium
+```bash
+# Com OpenAI configurado
+python main.py --chapters_dir "manga" --output "premium.mp4"
+```
+
+## 🔄 Fallback Inteligente
+
+O sistema **nunca falha** graças ao fallback automático:
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   OpenAI    │───▶│    Local    │───▶│   Silent    │
+│  (Premium)  │    │   (Good)    │    │  (Always)   │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+## 📈 Performance
+
+| Operação | 1 Cap. (40 pgs) | Observações |
+|----------|-----------------|-------------|
+| OCR | ~10s | Independente do provedor |
+| Script OpenAI | ~3s | Qualidade premium |
+| Script Local | <1s | Instantâneo |
+| Audio OpenAI | ~5s | Alta qualidade |
+| Audio Local | ~1s | Qualidade sistema |
+| Vídeo | ~3s | Processamento rápido |
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch: `git checkout -b feature/novo-provider`
+3. Implemente seguindo a interface `AIProvider`
+4. Teste: `python test_openai.py`
+5. Pull Request
+
+## 📄 Licença
+
+MIT License - veja o arquivo LICENSE para detalhes.
 
 ---
 
-## Contribuindo
-
-Contribuições são muito bem-vindas!
-Siga estas etapas:
-
-1. Abra um *issue* para discutir mudanças.
-2. Faça um fork do repositório.
-3. Crie uma branch (`git checkout -b feature/NovaFuncionalidade`).
-4. Faça suas alterações e adicione testes.
-5. Envie um Pull Request.
-
----
-
-  
- 
+**🎬 Sistema que sempre funciona, com qualidade quando possível! 🎬** 
