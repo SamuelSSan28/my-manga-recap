@@ -3,7 +3,8 @@ Pillow
 transformers
 moviepy
 pyttsx3
-TTS
+python-dotenv
+numpy
 
 requests
 beautifulsoup4
