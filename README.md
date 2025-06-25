@@ -42,6 +42,11 @@ cp env.example .env
 python main.py --chapters_dir "manga_folder" --output "test.mp4" --max-chapters 1 --force
 ```
 
+### Menu Interativo
+```bash
+python interactive_cli.py
+```
+
 ### Com OpenAI (Qualidade Premium)
 ```bash
 # 1. Configure o arquivo .env
@@ -93,6 +98,14 @@ OPENAI_TTS_VOICE=alloy
 - **shimmer**: Voz suave
 
 ## 🤖 Sistema de Provedores
+
+### 🖼️ Provedores de OCR
+O módulo de OCR agora suporta múltiplos provedores com fallback automático.
+
+| Provider | Descrição |
+|----------|-----------|
+| **TrOCR** | Usa modelo da HuggingFace para maior precisão (requer `torch`) |
+| **Tesseract** | Padrão e sempre disponível |
 
 ### 1. **OpenAI Provider** (Premium)
 ```bash

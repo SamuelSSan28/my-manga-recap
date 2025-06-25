@@ -27,6 +27,7 @@ except ImportError:  # pragma: no cover - optional dependency
     generate_scripts_from_ocr = None
 
 from .ocr import extract_text_from_chapter
+from .ocr_provider import OCRManager, TesseractProvider, TrOCRProvider
 from .audio_gen import text_to_speech
 from .video_gen import create_video
 
@@ -39,4 +40,7 @@ __all__ = [
     "generate_scripts_from_ocr",
     "text_to_speech",
     "create_video",
+    "OCRManager",
+    "TesseractProvider",
+    "TrOCRProvider",
 ]
