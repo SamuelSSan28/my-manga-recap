@@ -16,9 +16,17 @@ __version__ = "2.0.0"
 __author__ = "My Manga Recap Team"
 
 # Principais classes/funções exportadas
-from .ai_provider import AIManager, OpenAIProvider, LocalProvider, SilentProvider
+try:
+    from .ai_provider import AIManager, OpenAIProvider, LocalProvider, SilentProvider
+except ImportError:  # pragma: no cover - optional dependency
+    AIManager = OpenAIProvider = LocalProvider = SilentProvider = None
+
+try:
+    from .script_narrator import generate_scripts_from_ocr
+except ImportError:  # pragma: no cover - optional dependency
+    generate_scripts_from_ocr = None
+
 from .ocr import extract_text_from_chapter
-from .script_narrator import generate_scripts_from_ocr
 from .audio_gen import text_to_speech
 from .video_gen import create_video
 
@@ -28,7 +36,7 @@ __all__ = [
     "LocalProvider", 
     "SilentProvider",
     "extract_text_from_chapter",
-    "generate_scripts_from_ocr", 
+    "generate_scripts_from_ocr",
     "text_to_speech",
-    "create_video"
+    "create_video",
 ]

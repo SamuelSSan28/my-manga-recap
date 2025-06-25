@@ -4,15 +4,19 @@ Script de teste para verificar a integração com diferentes provedores de IA
 """
 import os
 import sys
-from modules.ai_provider import AIManager, OpenAIProvider, LocalProvider, SilentProvider
+from modules import AIManager, OpenAIProvider, LocalProvider, SilentProvider
 from modules.config import print_config_status
 
 def test_ai_providers():
     """Testa todos os provedores de IA disponíveis"""
-    
+
     print("🧪 Teste de Provedores de IA")
     print("=" * 50)
-    
+
+    if AIManager is None:
+        print("❌ Módulo ai_provider não encontrado. Teste não pode ser executado.")
+        return False
+
     # Initialize AI manager
     ai_manager = AIManager()
     
@@ -50,11 +54,13 @@ def test_ai_providers():
     # Test individual providers
     print("\n🔍 Testando provedores individuais:")
     
-    providers = [
-        ("OpenAI", OpenAIProvider()),
-        ("Local", LocalProvider()),
-        ("Silent", SilentProvider())
-    ]
+    providers = []
+    if OpenAIProvider is not None:
+        providers.append(("OpenAI", OpenAIProvider()))
+    if LocalProvider is not None:
+        providers.append(("Local", LocalProvider()))
+    if SilentProvider is not None:
+        providers.append(("Silent", SilentProvider()))
     
     for name, provider in providers:
         print(f"\n{name} Provider:")

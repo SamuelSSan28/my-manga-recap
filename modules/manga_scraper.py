@@ -234,53 +234,66 @@ def _extract_manga_name(url: str) -> str:
     return domain.replace('www.', '').split('.')[0].capitalize()
 
 
-def download_chapter_images(chapter_url: str, dest_dir: str, chapter_num: int, delay: float = 1.0) -> bool:
+def download_chapter_images(
+    chapter_url: str,
+    dest_dir: str,
+    chapter_num: int,
+    delay: float = 1.0,
+) -> bool:
     """Download all images from a chapter page into the destination directory."""
 
     try:
-    os.makedirs(dest_dir, exist_ok=True)
-    html = _get_page_html(chapter_url)
-    if not html:
+        os.makedirs(dest_dir, exist_ok=True)
+        html = _get_page_html(chapter_url)
+        if not html:
             logger.error(f"❌ Falha ao carregar HTML do capítulo {chapter_num}")
             return False
 
-    soup = BeautifulSoup(html, "html.parser")
-    image_urls: List[str] = []
-    for img in soup.find_all("img"):
-        src = img.get("src")
-        if not src or src.startswith("data:"):
-            continue
-        full_url = urljoin(chapter_url, src)
-        image_urls.append(full_url)
+        soup = BeautifulSoup(html, "html.parser")
+        image_urls: List[str] = []
+        for img in soup.find_all("img"):
+            src = img.get("src")
+            if not src or src.startswith("data:"):
+                continue
+            full_url = urljoin(chapter_url, src)
+            image_urls.append(full_url)
 
-    if not image_urls:
-            logger.warning(f"⚠️  Nenhuma imagem encontrada no capítulo {chapter_num}")
+        if not image_urls:
+            logger.warning(
+                f"⚠️  Nenhuma imagem encontrada no capítulo {chapter_num}"
+            )
             return False
 
         successful_downloads = 0
-    for i, url in enumerate(image_urls, 1):
-        try:
-            img_resp = requests.get(url, timeout=10)
-            img_resp.raise_for_status()
-            ext = os.path.splitext(url)[1] or ".jpg"
-            file_name = os.path.join(dest_dir, f"{i:03d}{ext}")
-            with open(file_name, "wb") as f:
-                f.write(img_resp.content)
+        for i, url in enumerate(image_urls, 1):
+            try:
+                img_resp = requests.get(url, timeout=10)
+                img_resp.raise_for_status()
+                ext = os.path.splitext(url)[1] or ".jpg"
+                file_name = os.path.join(dest_dir, f"{i:03d}{ext}")
+                with open(file_name, "wb") as f:
+                    f.write(img_resp.content)
                 successful_downloads += 1
-        except Exception as exc:
-                logger.error(f"❌ Erro ao baixar imagem {i} do capítulo {chapter_num}: {exc}")
-            
-        if delay:
-            time.sleep(delay)
+            except Exception as exc:
+                logger.error(
+                    f"❌ Erro ao baixar imagem {i} do capítulo {chapter_num}: {exc}"
+                )
+
+            if delay:
+                time.sleep(delay)
 
         success = successful_downloads > 0
         if success:
-            logger.info(f"✅ Capítulo {chapter_num}: {successful_downloads}/{len(image_urls)} imagens baixadas")
+            logger.info(
+                f"✅ Capítulo {chapter_num}: {successful_downloads}/{len(image_urls)} imagens baixadas"
+            )
         else:
-            logger.error(f"❌ Capítulo {chapter_num}: Falha total no download")
-            
+            logger.error(
+                f"❌ Capítulo {chapter_num}: Falha total no download"
+            )
+
         return success
-        
+
     except Exception as exc:
         logger.error(f"❌ Erro geral no capítulo {chapter_num}: {exc}")
         return False
@@ -353,7 +366,7 @@ def download_chapters(json_file: str, delay: float = 1.0, batch_size: int = 3) -
     # Add chapters from where we left off
     for idx, url in enumerate(chapter_links, 1):
         if idx > last_completed:
-        chapter_dir = os.path.join(manga_name, f"chapter-{idx}")
+            chapter_dir = os.path.join(manga_name, f"chapter-{idx}")
             chapters_to_download.append((idx, url, chapter_dir))
     
     # Add previously failed chapters
