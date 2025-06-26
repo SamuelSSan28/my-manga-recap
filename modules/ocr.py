@@ -2,22 +2,23 @@ import os
 import json
 from typing import List, Dict
 from PIL import Image
-import pytesseract
+
+from .ocr_provider import OCRManager
+
+# Initialize default OCR manager with fallback providers
+_ocr_manager = OCRManager()
 
 
 def extract_text_from_image(image_path: str) -> str:
-    """Extract text from a single image file using OCR."""
+    """Extract text from a single image file using the OCR manager."""
     try:
-        with Image.open(image_path) as img:
-            # Try to extract text using pytesseract
-            text = pytesseract.image_to_string(img, lang='eng+por')  # Support English and Portuguese
-            return text.strip() or "[Página vazia]"
+        return _ocr_manager.extract_text(image_path)
     except Exception as exc:
         print(f"Failed to process {image_path}: {exc}")
         return f"[Erro ao processar: {exc}]"
 
 
-def extract_text_from_chapter(chapter_dir: str) -> Dict[str, any]:
+def extract_text_from_chapter(chapter_dir: str, manager: OCRManager = _ocr_manager) -> Dict[str, any]:
     """Extract text from all images in a chapter directory with image-text linking."""
     chapter_name = os.path.basename(chapter_dir)
     image_files = [f for f in sorted(os.listdir(chapter_dir)) 
@@ -36,7 +37,7 @@ def extract_text_from_chapter(chapter_dir: str) -> Dict[str, any]:
         page_key = f"{chapter_name}-page-{i:03d}"
         
         # Extract text from image
-        text = extract_text_from_image(path)
+        text = manager.extract_text(path)
         
         # Store with metadata
         page_data[page_key] = {
@@ -69,7 +70,7 @@ def extract_text_from_chapter(chapter_dir: str) -> Dict[str, any]:
     }
 
 
-def extract_text_from_chapter_simple(chapter_dir: str) -> str:
+def extract_text_from_chapter_simple(chapter_dir: str, manager: OCRManager = _ocr_manager) -> str:
     """Backward compatibility: Extract concatenated text from chapter directory."""
-    result = extract_text_from_chapter(chapter_dir)
+    result = extract_text_from_chapter(chapter_dir, manager)
     return "\n".join(result["content_texts"])
