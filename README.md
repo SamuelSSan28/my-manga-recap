@@ -78,6 +78,8 @@ OPENAI_API_KEY=sk-sua-chave-aqui
 OPENAI_MODEL=gpt-4o-mini
 OPENAI_TTS_MODEL=tts-1
 OPENAI_TTS_VOICE=alloy
+OPENAI_VISION_MODEL=gpt-4o
+MMR_LANG=pt
 ```
 
 ### Configurações Disponíveis
@@ -88,6 +90,8 @@ OPENAI_TTS_VOICE=alloy
 | `OPENAI_MODEL` | Modelo GPT | `gpt-4o-mini` |
 | `OPENAI_TTS_MODEL` | Modelo TTS | `tts-1` |
 | `OPENAI_TTS_VOICE` | Voz do TTS | `alloy` |
+| `OPENAI_VISION_MODEL` | Modelo de OCR Vision | `gpt-4o` |
+| `MMR_LANG` | Idioma padrão das saídas | `pt` |
 
 ### Vozes Disponíveis
 - **alloy**: Voz neutra e clara
@@ -104,8 +108,11 @@ O módulo de OCR agora suporta múltiplos provedores com fallback automático.
 
 | Provider | Descrição |
 |----------|-----------|
+| **OpenAI Vision** | Usa GPT-4o para OCR e contexto (requer API key) |
 | **TrOCR** | Usa modelo da HuggingFace para maior precisão (requer `torch`) |
 | **Tesseract** | Padrão e sempre disponível |
+
+A integração OpenAI Vision permite extrair texto, personagens e contexto de cada página.
 
 ### 1. **OpenAI Provider** (Premium)
 ```bash
