@@ -14,7 +14,7 @@ except ImportError:
 DEFAULT_TEMP_DIR = "temp"
 
 # Language and video settings
-DEFAULT_LANG = "pt"
+DEFAULT_LANG = os.getenv("MMR_LANG", "pt")
 DEFAULT_IMAGE_DURATION = None  # Auto-calculated based on audio
 DEFAULT_VIDEO_WIDTH = 1280
 DEFAULT_VIDEO_HEIGHT = 720
@@ -24,6 +24,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "tts-1")
 OPENAI_TTS_VOICE = os.getenv("OPENAI_TTS_VOICE", "alloy")
+OPENAI_VISION_MODEL = os.getenv("OPENAI_VISION_MODEL", "gpt-4o")
 
 # Configuration validation and info
 def get_openai_config():
@@ -32,7 +33,8 @@ def get_openai_config():
         "api_key": OPENAI_API_KEY,
         "model": OPENAI_MODEL,
         "tts_model": OPENAI_TTS_MODEL,
-        "tts_voice": OPENAI_TTS_VOICE
+        "tts_voice": OPENAI_TTS_VOICE,
+        "vision_model": OPENAI_VISION_MODEL,
     }
 
 def is_openai_configured():
@@ -46,5 +48,6 @@ def print_config_status():
     print(f"  OPENAI_MODEL: {OPENAI_MODEL}")
     print(f"  OPENAI_TTS_MODEL: {OPENAI_TTS_MODEL}")
     print(f"  OPENAI_TTS_VOICE: {OPENAI_TTS_VOICE}")
+    print(f"  OPENAI_VISION_MODEL: {OPENAI_VISION_MODEL}")
     if not is_openai_configured():
         print("💡 Dica: Copie env.example para .env e configure sua API key")
