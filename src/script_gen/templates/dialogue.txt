@@ -1,0 +1,9 @@
+[Tom conversacional]
+
+{text}
+
+[Contexto do diálogo]
+{context.get('dialogue_context', 'Os personagens compartilham suas perspectivas.')}
+
+[Emoção subjacente]
+{context.get('emotion', 'A conversa revela camadas de significado.')} 

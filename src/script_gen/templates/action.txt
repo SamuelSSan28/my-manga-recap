@@ -1,0 +1,9 @@
+[Tom emocionante e dinâmico]
+
+{text}
+
+[Descrição da ação]
+{context.get('action_description', 'A cena se desenrola com intensidade crescente.')}
+
+[Transição]
+{context.get('transition', 'A tensão aumenta conforme os eventos se sucedem.')} 

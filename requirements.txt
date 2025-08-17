@@ -1,14 +1,36 @@
-pytesseract
-Pillow
-transformers
-torch
-moviepy
-pyttsx3
-python-dotenv
-numpy
+# OCR
+pytesseract>=0.3.10
+Pillow>=10.0.0
+transformers>=4.30.0
+torch>=2.0.0
 
-requests
-beautifulsoup4
-selenium
-webdriver-manager
-openai
+# Processamento de áudio/vídeo
+moviepy>=1.0.3
+pyttsx3>=2.90
+pydub>=0.25.1
+
+# IA e APIs
+python-dotenv>=1.0.0
+openai>=1.0.0
+numpy>=1.24.0
+
+# Processamento de imagem avançado
+opencv-python>=4.8.0
+scikit-image>=0.21.0
+
+# Web scraping (opcional)
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+selenium>=4.10.0
+webdriver-manager>=4.0.0
+
+# CLI e utilitários
+inquirer>=3.1.3
+rich>=13.4.0
+
+# Desenvolvimento
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.7.0
+flake8>=6.1.0
+mypy>=1.5.0

@@ -20,10 +20,12 @@ The Beginning After The End/
 
 # Common manga folder patterns
 [A-Z]*/
-[a-z]*/
 *[Mm]anga*/
 *[Mm]anhwa*/
 *[Mm]anhua*/
+
+# Source code (allow src/ directory)
+!src/
 
 # Generated JSON files
 *.json
