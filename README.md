@@ -1,6 +1,6 @@
 # 🎬 My Manga Recap
 
-Sistema completo e adaptável para converter mangás em vídeos narrados com IA.
+Sistema completo e adaptável para converter mangás em vídeos narrados com IA, com arquitetura modular e processamento otimizado.
 
 ## ✨ Funcionalidades
 
@@ -10,10 +10,41 @@ Sistema completo e adaptável para converter mangás em vídeos narrados com IA.
 - **Silent Provider**: Fallback com áudio de duração calculada (garantia de funcionamento)
 - **Fallback automático**: Sistema inteligente que sempre encontra uma solução
 
-### ⚙️ Configuração Simplificada com .env
-- **Configuração centralizada**: Todas as configurações em um só lugar
-- **Arquivo .env**: Configuração segura de API keys
-- **Fallback inteligente**: Funciona sem configuração externa
+### 🔍 Sistema de OCR Avançado
+- **OpenAI Vision**: OCR com contexto usando GPT-4o (requer API key)
+- **TrOCR**: Modelo da HuggingFace para maior precisão
+- **Tesseract**: OCR local sempre disponível
+- **Fallback inteligente**: Seleção automática do melhor provider
+
+### 🖼️ Processamento de Imagem
+- **Melhoria para OCR**: Contraste, nitidez, remoção de ruído
+- **Auto-rotação**: Detecção e correção automática de rotação
+- **Otimização para vídeo**: Redimensionamento e formatação
+- **Técnicas específicas para mangá**: Remoção de fundo, threshold adaptativo
+
+### 📝 Geração de Roteiros
+- **Templates especializados**: Ação, diálogo, cenas gerais
+- **Contexto inteligente**: Análise de cenas e personagens
+- **Narrativa fluida**: Conexão entre cenas e capítulos
+- **Múltiplos idiomas**: Suporte a português, inglês e japonês
+
+### 🔊 Sistema de Áudio
+- **Síntese de voz**: OpenAI TTS ou TTS local
+- **Processamento avançado**: Silêncio, transições, metadados
+- **Formato flexível**: MP3, WAV com configurações personalizáveis
+- **Cache inteligente**: Evita reprocessamento desnecessário
+
+### 🎥 Geração de Vídeo
+- **Composição automática**: Imagens + áudio + transições
+- **Títulos e créditos**: Geração automática de elementos visuais
+- **Qualidade configurável**: HD, Full HD, 4K
+- **Formato otimizado**: MP4 com codec H.264
+
+### ⚡ Processamento em Lote
+- **Múltiplos capítulos**: Processamento paralelo otimizado
+- **Sistema de filas**: Workers configuráveis
+- **Monitoramento**: Progresso em tempo real
+- **Recuperação de erros**: Continuação automática
 
 ## 🛠️ Instalação Rápida
 
@@ -23,7 +54,7 @@ git clone <repo_url>
 cd my-manga-recap
 
 # Crie um ambiente virtual
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # Linux/Mac
 
 # Instale dependências
@@ -39,12 +70,12 @@ cp env.example .env
 ### Teste Rápido (Sempre Funciona)
 ```bash
 # Funciona sem qualquer configuração externa
-python main.py --chapters_dir "manga_folder" --output "test.mp4" --max-chapters 1 --force
+python3 -m src.main --chapters_dir "manga_folder" --output "test.mp4" --max-chapters 1 --force
 ```
 
 ### Menu Interativo
 ```bash
-python interactive_cli.py
+python3 -m src.interactive_cli
 ```
 
 ### Com OpenAI (Qualidade Premium)
@@ -54,16 +85,13 @@ cp env.example .env
 nano .env  # Adicione sua OPENAI_API_KEY
 
 # 2. Execute com qualidade premium
-python main.py --chapters_dir "manga_folder" --output "video.mp4"
+python3 -m src.main --chapters_dir "manga_folder" --output "video.mp4"
 ```
 
-### Verificar Sistema
+### Processamento em Lote
 ```bash
-# Verificar configuração atual
-python test_openai.py --config
-
-# Testar todos os provedores
-python test_openai.py
+# Processa múltiplos capítulos em paralelo
+python3 -m src.main --chapters_dir "manga_folder" --output "chapter_%d.mp4"
 ```
 
 ## ⚙️ Configuração
@@ -80,6 +108,7 @@ OPENAI_TTS_MODEL=tts-1
 OPENAI_TTS_VOICE=alloy
 OPENAI_VISION_MODEL=gpt-4o
 MMR_LANG=pt
+LOG_LEVEL=INFO
 ```
 
 ### Configurações Disponíveis
@@ -92,68 +121,36 @@ MMR_LANG=pt
 | `OPENAI_TTS_VOICE` | Voz do TTS | `alloy` |
 | `OPENAI_VISION_MODEL` | Modelo de OCR Vision | `gpt-4o` |
 | `MMR_LANG` | Idioma padrão das saídas | `pt` |
+| `LOG_LEVEL` | Nível de logging | `INFO` |
 
-### Vozes Disponíveis
-- **alloy**: Voz neutra e clara
-- **echo**: Voz masculina
-- **fable**: Voz expressiva 
-- **onyx**: Voz grave
-- **nova**: Voz feminina
-- **shimmer**: Voz suave
-
-## 🤖 Sistema de Provedores
-
-### 🖼️ Provedores de OCR
-O módulo de OCR agora suporta múltiplos provedores com fallback automático.
-
-| Provider | Descrição |
-|----------|-----------|
-| **OpenAI Vision** | Usa GPT-4o para OCR e contexto (requer API key) |
-| **TrOCR** | Usa modelo da HuggingFace para maior precisão (requer `torch`) |
-| **Tesseract** | Padrão e sempre disponível |
-
-A integração OpenAI Vision permite extrair texto, personagens e contexto de cada página.
-
-### 1. **OpenAI Provider** (Premium)
-```bash
-✅ Roteiros profissionais com GPT
-✅ TTS de alta qualidade
-✅ Múltiplas vozes naturais
-⚠️  Requer API key e créditos
-```
-
-### 2. **Local Provider** (Sempre Disponível)
-```bash
-✅ Sempre funciona offline
-✅ TTS com vozes do sistema
-✅ Roteiros funcionais
-⚠️  Qualidade dependente do sistema
-```
-
-### 3. **Silent Provider** (Garantia)
-```bash
-✅ Sempre funciona como último recurso
-✅ Duração calculada baseada no texto
-✅ Perfeito para testes
-⚠️  Áudio silencioso
-```
-
-## 📊 Arquitetura do Sistema
+## 🏗️ Arquitetura do Sistema
 
 ```
-┌─────────────────┐
-│   main.py       │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│   modules/      │
-│  ├─ config.py   │ ◄── Carrega .env
-│  ├─ ai_provider │ ◄── Usa config
-│  ├─ ocr.py      │
-│  ├─ script_*    │
-│  ├─ audio_gen   │
-│  └─ video_gen   │
-└─────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    My Manga Recap                          │
+├─────────────────────────────────────────────────────────────┤
+│  📁 src/                    # Código fonte principal      │
+│  ├─ 🎯 main.py             # Entrypoint principal         │
+│  ├─ 🖥️ interactive_cli.py  # Interface CLI interativa    │
+│  ├─ ⚙️ config/             # Configurações e constantes  │
+│  ├─ 🤖 ai_provider/        # Provedores de IA            │
+│  │  ├─ base.py             # Interface base              │
+│  │  └─ providers/          # OpenAI, Local, Silent      │
+│  ├─ 🔍 ocr/                # Sistema de OCR              │
+│  │  ├─ base.py             # Interface OCR               │
+│  │  └─ providers/          # Tesseract, TrOCR           │
+│  ├─ 🖼️ image_processor/    # Processamento de imagem     │
+│  ├─ 📝 script_gen/         # Geração de roteiros         │
+│  │  └─ templates/          # Templates especializados    │
+│  ├─ 🔊 audio_gen/           # Síntese de áudio            │
+│  ├─ 🎥 video_gen/          # Composição de vídeo         │
+│  └─ 🛠️ utils/              # Utilitários e cache        │
+├─────────────────────────────────────────────────────────────┤
+│  📁 tests/                 # Testes automatizados        │
+│  📁 docs/                  # Documentação                │
+│  📁 examples/              # Exemplos de uso             │
+│  📁 scripts/               # Scripts de utilidade        │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ## 🎯 Parâmetros CLI
@@ -174,7 +171,7 @@ A integração OpenAI Vision permite extrair texto, personagens e contexto de ca
 ### Problema: "OpenAI não funciona"
 ```bash
 # Verificar configuração
-python test_openai.py --config
+python3 -c "from src.config.settings import OPENAI_API_KEY; print('Configurado' if OPENAI_API_KEY else 'Não configurado')"
 
 # Sistema usa automaticamente Local Provider
 ```
@@ -187,76 +184,16 @@ cp env.example .env
 # Sistema funciona sem .env (usa Local Provider)
 ```
 
-### Problema: "python-dotenv não encontrado"
+### Problema: "Erro de dependências"
 ```bash
-# Instalar dependência
-pip install python-dotenv
+# Reinstalar dependências
+pip install -r requirements.txt --upgrade
 
-# Ou reinstalar todas
-pip install -r requirements.txt
+# Verificar versões
+pip list | grep -E "(torch|opencv|moviepy)"
 ```
 
-## 📁 Estrutura de Arquivos
-
-```
-my-manga-recap/
-├── main.py              # Script principal
-├── test_openai.py       # Teste de provedores
-├── env.example          # Exemplo de configuração
-├── .env                 # Suas configurações (não versionado)
-├── requirements.txt     # Dependências
-├── modules/
-│   ├── __init__.py      # Exports do módulo
-│   ├── config.py        # Configurações centralizadas
-│   ├── ai_provider.py   # Sistema de IA
-│   ├── ocr.py          # Extração de texto
-│   ├── script_narrator.py # Geração de roteiros
-│   ├── audio_gen.py    # Síntese de voz
-│   └── video_gen.py    # Criação de vídeo
-└── temp/               # Arquivos temporários
-    ├── chapter_texts.json
-    ├── narration_scripts.json
-    └── narration.mp3
-```
-
-## 🎮 Exemplos Práticos
-
-### Configuração Inicial
-```bash
-# 1. Copiar configuração
-cp env.example .env
-
-# 2. Editar com sua API key
-echo "OPENAI_API_KEY=sk-sua-chave" > .env
-
-# 3. Testar configuração
-python test_openai.py --config
-```
-
-### Teste Básico
-```bash
-# Sempre funciona, sem configuração
-python main.py --chapters_dir "manga" --output "test.mp4" --max-chapters 1
-```
-
-### Qualidade Premium
-```bash
-# Com OpenAI configurado
-python main.py --chapters_dir "manga" --output "premium.mp4"
-```
-
-## 🔄 Fallback Inteligente
-
-O sistema **nunca falha** graças ao fallback automático:
-
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   OpenAI    │───▶│    Local    │───▶│   Silent    │
-│  (Premium)  │    │   (Good)    │    │  (Always)   │
-└─────────────┘    └─────────────┘    └─────────────┘
-```
-
-## 📈 Performance
+## 📊 Performance
 
 | Operação | 1 Cap. (40 pgs) | Observações |
 |----------|-----------------|-------------|
@@ -266,13 +203,36 @@ O sistema **nunca falha** graças ao fallback automático:
 | Audio OpenAI | ~5s | Alta qualidade |
 | Audio Local | ~1s | Qualidade sistema |
 | Vídeo | ~3s | Processamento rápido |
+| **Lote (10 cap.)** | **~2min** | **Processamento paralelo** |
+
+## 🚀 Recursos Avançados
+
+### 🔄 Sistema de Cache
+- Cache inteligente para OCR, scripts e áudio
+- TTL configurável para otimização
+- Evita reprocessamento desnecessário
+
+### 📊 Logging Estruturado
+- Logs detalhados para debug
+- Rotação automática de arquivos
+- Níveis configuráveis (DEBUG, INFO, WARNING, ERROR)
+
+### 🎨 Templates de Roteiro
+- **Ação**: Para cenas de luta e movimento
+- **Diálogo**: Para conversas e interações
+- **Geral**: Para cenas neutras e transições
+
+### ⚡ Processamento em Lote
+- Workers configuráveis (padrão: 4)
+- Sistema de filas para otimização
+- Recuperação automática de erros
 
 ## 🤝 Contribuindo
 
 1. Fork o projeto
-2. Crie uma branch: `git checkout -b feature/novo-provider`
-3. Implemente seguindo a interface `AIProvider`
-4. Teste: `python test_openai.py`
+2. Crie uma branch: `git checkout -b feature/nova-funcionalidade`
+3. Implemente seguindo a arquitetura modular
+4. Teste: `python3 -m pytest tests/`
 5. Pull Request
 
 ## 📄 Licença
@@ -281,4 +241,6 @@ MIT License - veja o arquivo LICENSE para detalhes.
 
 ---
 
-**🎬 Sistema que sempre funciona, com qualidade quando possível! 🎬** 
+**🎬 Sistema que sempre funciona, com qualidade quando possível! 🎬**
+
+*Arquitetura modular, processamento otimizado e interface intuitiva para transformar mangás em experiências audiovisuais envolventes.* 
