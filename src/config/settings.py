@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+from .constants import AUDIO_SETTINGS as BASE_AUDIO_SETTINGS
+
 # Carrega variáveis de ambiente do .env
 load_dotenv()
 
@@ -24,6 +26,9 @@ DEFAULT_LANGUAGE = os.getenv("MMR_LANG", "pt")
 DEFAULT_VIDEO_WIDTH = 1280
 DEFAULT_VIDEO_HEIGHT = 720
 DEFAULT_FPS = 30
+
+# Configurações de áudio
+AUDIO_SETTINGS = BASE_AUDIO_SETTINGS.copy()
 
 # Configurações de cache
 CACHE_ENABLED = True

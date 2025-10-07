@@ -42,6 +42,10 @@ class AudioSynthesizer:
             
             # Gera áudio
             audio_path = self.provider.generate_audio(text, output_path)
+
+            # Determina formato final baseado na extensão retornada
+            target_suffix = audio_path.suffix.lower()
+            target_format = target_suffix.lstrip('.') if target_suffix else self._settings["format"]
             
             # Adiciona silêncio se necessário
             if add_silence:
@@ -54,13 +58,13 @@ class AudioSynthesizer:
                 # Salva resultado
                 audio.export(
                     audio_path,
-                    format=self._settings["format"],
+                    format=target_format,
                     parameters=[
                         "-ar", str(self._settings["sample_rate"]),
                         "-ac", str(self._settings["channels"])
                     ]
                 )
-            
+
             return audio_path
             
         except Exception as e:

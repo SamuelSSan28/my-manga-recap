@@ -27,15 +27,19 @@ class SilentProvider(AIProvider):
             # Calcula duração baseada no número de palavras
             words = len(text.split())
             duration = max(1.0, words * 0.3)  # Mínimo 1 segundo
-            
+
             # Parâmetros do áudio
             sample_rate = 44100
             num_channels = 2
             sample_width = 2  # 16 bits
-            
+
+            # Garante que a extensão do arquivo corresponda ao formato gerado (WAV)
+            if output_path.suffix.lower() != ".wav":
+                output_path = output_path.with_suffix(".wav")
+
             # Cria diretório se necessário
             output_path.parent.mkdir(parents=True, exist_ok=True)
-            
+
             # Gera arquivo WAV silencioso
             with wave.open(str(output_path), 'w') as wav_file:
                 wav_file.setnchannels(num_channels)
